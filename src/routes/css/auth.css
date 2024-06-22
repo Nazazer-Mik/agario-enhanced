@@ -1,0 +1,82 @@
+@import url("https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
+
+.auth-form {
+  display: flex;
+  justify-content: center;
+}
+
+.auth-form label {
+  display: block;
+  text-align: left;
+  font-family: "Rubik", sans-serif;
+  font-weight: 500;
+  color: white;
+  font-size: 1.4rem;
+  margin-bottom: 15px;
+}
+
+.auth-form input {
+  padding: 10px;
+  padding-left: 15px;
+  padding-right: 15px;
+  border-radius: 30px;
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+  border: solid 3px rgba(0, 0, 0, 0);
+  transition: 0.15s ease-out border;
+  font-family: "Inter", sans-serif;
+  width: 25vw;
+}
+
+.auth-form input:focus {
+  outline: none;
+  border: solid 3px #eca72c;
+}
+
+.auth-form button {
+  background-color: rgba(0, 0, 0, 0);
+  border: outset 5px #eca72c;
+  border-radius: 75px;
+  font-family: "Rubik", sans-serif;
+  font-weight: 500;
+  color: white;
+  font-size: 1.3rem;
+  padding-left: 30px;
+  padding-right: 30px;
+  cursor: pointer;
+  transition: 0.15s ease-in-out all;
+  padding: 15px;
+  padding-left: 50px;
+  padding-right: 50px;
+  margin-top: 15%;
+}
+
+.auth-form button:hover {
+  background-color: #eca72c;
+  color: #221e22;
+}
+
+.auth-form p {
+  font-size: 1.1rem;
+  color: white;
+}
+
+.auth-form p a {
+  text-decoration: underline #44355b 3px;
+  font-style: normal;
+  color: white;
+  transition: 0.15s ease-out all;
+}
+
+.auth-form p a:hover {
+  text-decoration: underline #8256c5 3px;
+}
+
+#reg-window-body hr {
+  margin-bottom: 23px;
+}
+
+#register button {
+  margin-top: 5%;
+}

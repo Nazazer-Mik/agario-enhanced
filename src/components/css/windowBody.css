@@ -1,0 +1,10 @@
+.window-body {
+  height: calc(75vh - 2rem - 100px - 1.2 * 2.2rem);
+}
+
+.window-body hr {
+  width: 90%;
+  border: solid 2px white;
+  border-radius: 3px;
+  margin-bottom: 75px;
+}

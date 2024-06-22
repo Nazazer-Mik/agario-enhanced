@@ -1,0 +1,12 @@
+.window-head {
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+.window-head h2 {
+  color: white;
+  font-size: 2.2rem;
+  font-family: "Graduate", serif;
+  font-weight: 700;
+  font-style: normal;
+}
