@@ -11,6 +11,7 @@ const gameFieldWidth = 1920 * 3; // 5760
 const gameFieldHeight = 945 * 5; // 4725
 
 let blobs: Blob[] = [];
+let blobsNearby: Blob[] = [];
 const BLOB_SIZE = 7;
 const blobsAmount = Math.floor(
   (gameFieldHeight * gameFieldWidth * 0.0025) /
@@ -25,6 +26,10 @@ class Blob {
   private r: number;
   private color: string;
   private outlineColor: string;
+  private sinDeg: number = 0;
+  private sinCoef: number;
+  private cosDeg: number = 0;
+  private cosCoef: number;
 
   public constructor(
     x: number,
@@ -38,6 +43,8 @@ class Blob {
     this.r = r;
     this.color = color;
     this.outlineColor = outlineColor;
+    this.sinCoef = Math.random() * 0.3;
+    this.cosCoef = Math.random() * 0.3;
   }
 
   public getX = () => this.x;
@@ -48,6 +55,14 @@ class Blob {
     const newY = this.y - relY;
 
     drawCircle(newX, newY, this.r, this.color, this.outlineColor, 2);
+  }
+
+  public floatAround(): void {
+    this.x += this.sinCoef * Math.sin(this.sinDeg++ * (Math.PI / 180));
+    this.y += this.cosCoef * Math.cos(this.cosDeg++ * (Math.PI / 180));
+
+    this.sinDeg = this.sinDeg >= 360 ? 0 : this.sinDeg;
+    this.cosDeg = this.cosDeg >= 360 ? 0 : this.cosDeg;
   }
 }
 
@@ -84,6 +99,7 @@ function maintainBlobsAmount() {
 class Player {
   private x: number;
   private y: number;
+  public readonly r = 50;
   private color: string;
   private mass: number;
 
@@ -107,6 +123,19 @@ class Player {
     if (this.x > gameFieldWidth) this.x = gameFieldWidth;
     if (this.y < 0) this.y = 0;
     if (this.y > gameFieldHeight) this.y = gameFieldHeight;
+  }
+
+  public eat(blob: Blob): boolean {
+    const distance = Math.sqrt(
+      Math.pow(this.x - blob.getX(), 2) + Math.pow(this.y - blob.getY(), 2)
+    );
+
+    if (distance < this.r) {
+      this.mass += 2;
+      return true;
+    }
+
+    return false;
   }
 }
 
@@ -148,13 +177,47 @@ export function update(): boolean {
   const halfWidth = canvas.width / 2;
   const halfHeight = canvas.height / 2;
 
-  const clampedX = (mouseX - halfWidth) / halfWidth; // [-1; 1]
-  const clampedY = (mouseY - halfHeight) / halfHeight;
+  const clampedX =
+    (((mouseX - halfWidth) / halfWidth) * 10) / (halfHeight / halfWidth); // Adding proportion of screen to make correct speed
+  const clampedY = ((mouseY - halfHeight) / halfHeight) * 10; // [-10; 10]
 
-  player.translate(clampedX * 3, clampedY * 3);
+  const speedX = Math.abs(clampedX) > 3 ? 3 * Math.sign(clampedX) : clampedX;
+  const speedY = Math.abs(clampedY) > 3 ? 3 * Math.sign(clampedY) : clampedY;
+
+  player.translate(speedX, speedY);
 
   // BLOBS
+  // Adding after eated
   maintainBlobsAmount();
+  // Movement
+  blobs.forEach((blob: Blob) => blob.floatAround());
+
+  // Filtering nearest to render
+  blobsNearby.length = 0;
+  const bufferZone = 50; // 50px behind screen
+  for (let i = 0; i < blobs.length; i++) {
+    const blob = blobs[i];
+    const x = blob.getX();
+    const y = blob.getY();
+    const playerX = player.getX();
+    const playerY = player.getY();
+
+    if (
+      x > playerX - canvas.width / 2 - bufferZone &&
+      x < playerX + canvas.width / 2 + bufferZone &&
+      y > playerY - canvas.height / 2 - bufferZone &&
+      y < playerY + canvas.height / 2 + bufferZone
+    ) {
+      const result: boolean = player.eat(blob);
+      if (result) {
+        blobs.splice(i, 1);
+      } else {
+        blobsNearby.push(blob);
+      }
+    }
+  }
+  console.log({ part: blobsNearby.length, all: blobs.length });
+
   return false;
 }
 
@@ -162,24 +225,22 @@ export function draw(): void {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   // BLOBS
-  blobs.forEach((blob) => {
-    const x = blob.getX();
-    const y = blob.getY();
-    const playerX = player.getX();
-    const playerY = player.getY();
-
-    if (
-      x > playerX - canvas.width / 2 &&
-      x < playerX + canvas.width / 2 &&
-      y > playerY - canvas.height / 2 &&
-      y < playerY + canvas.height / 2
-    ) {
-      blob.draw(playerX - canvas.width / 2, playerY - canvas.height / 2);
-    }
+  blobsNearby.forEach((blob) => {
+    blob.draw(
+      player.getX() - canvas.width / 2,
+      player.getY() - canvas.height / 2
+    );
   });
 
   // PLAYER
-  drawCircle(canvas.width / 2, canvas.height / 2, 50, "green", "brown", 3);
+  drawCircle(
+    canvas.width / 2,
+    canvas.height / 2,
+    player.r,
+    "green",
+    "brown",
+    3
+  );
 
   massField.innerHTML = "Current mass: " + player.getMass();
 }
