@@ -8,7 +8,7 @@ export default function Login() {
     <div className="window-wrapper">
       <WindowHead text="LOGIN" />
       <WindowBody id={"login-window-body"}>
-        <Form className="auth-form" id="login">
+        <Form className="auth-form" id="login" method="post">
           <div className="center-container">
             <div>
               <label htmlFor="username">Username:</label>

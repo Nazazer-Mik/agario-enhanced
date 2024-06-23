@@ -5,7 +5,7 @@ import App from "./App";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Menu, { loader as menuLoader } from "./routes/menu";
 import Login from "./routes/login";
-import Register from "./routes/register";
+import Register, { action as registerAction } from "./routes/register";
 import Game from "./game";
 
 const router = createBrowserRouter([
@@ -25,6 +25,7 @@ const router = createBrowserRouter([
       {
         path: "register",
         element: <Register />,
+        action: registerAction,
       },
     ],
   },

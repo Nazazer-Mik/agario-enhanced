@@ -1,0 +1,27 @@
+{
+  "name": "agario-enhanced-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/app.ts",
+  "scripts": {
+    "dev": "ts-node-dev --exit-child src/app.ts",
+    "start": "ts-node src/app.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "nazazer",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.14.8",
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.5.2"
+  },
+  "dependencies": {
+    "@types/express": "^4.17.21",
+    "@types/mongodb": "^4.0.7",
+    "body-parser": "^1.20.2",
+    "express": "^4.19.2",
+    "mongodb": "^6.7.0",
+    "socket.io": "^4.7.5"
+  }
+}
