@@ -4,7 +4,10 @@ import "./index.css";
 import App from "./App";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Menu, { loader as menuLoader } from "./routes/menu";
-import Login from "./routes/login";
+import Login, {
+  action as loginAction,
+  loader as loginLoader,
+} from "./routes/login";
 import Register, { action as registerAction } from "./routes/register";
 import Game from "./game";
 
@@ -21,6 +24,8 @@ const router = createBrowserRouter([
       {
         path: "login",
         element: <Login />,
+        action: loginAction,
+        loader: loginLoader,
       },
       {
         path: "register",

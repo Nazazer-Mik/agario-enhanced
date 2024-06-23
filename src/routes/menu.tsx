@@ -1,5 +1,11 @@
-import { useState } from "react";
-import { Link, redirect, useLoaderData } from "react-router-dom";
+import { useEffect, useState } from "react";
+import {
+  Link,
+  NavigateFunction,
+  redirect,
+  useLoaderData,
+  useNavigate,
+} from "react-router-dom";
 import WindowHead from "../components/windowHead";
 import WindowBody from "../components/windowBody";
 import "./css/menu.css";
@@ -10,28 +16,41 @@ function changePlayerColor(setColorCallback: (color: string) => void): void {
   setColorCallback("#" + rand_color);
 }
 
+function Logout(navigate: NavigateFunction) {
+  localStorage.removeItem("userId");
+  localStorage.removeItem("username");
+  localStorage.removeItem("playerColor");
+  navigate("/login");
+}
+
 export const loader = async () => {
   const userId = await localStorage.getItem("userId");
+  const username = localStorage.getItem("username");
+
+  const userInfo = {
+    id: userId,
+    name: username,
+  };
+
   if (!userId) {
     return redirect("/login");
   }
 
-  const userData = localStorage.getItem("userData");
-
-  return {
-    userId: userId,
-    userData: JSON.parse(userData as string),
-  };
+  return userInfo;
 };
 
 export default function Menu() {
-  //const { user } = useLoaderData<user: {userId: number, userData: { username: string }}>();
-  const username: string = "User"; //user.userData.username;
+  const user = useLoaderData() as { id: string; name: string };
   const [playerColor, setPlayerColor] = useState("#31AFD4");
+  const navigate = useNavigate(); // For logout redirect
+
+  useEffect(() => {
+    localStorage.setItem("playerColor", playerColor);
+  }, [playerColor]);
 
   return (
     <div className="window-wrapper">
-      <WindowHead text={`Welcome back, ${username}!`} />
+      <WindowHead text={`Welcome back, ${user.name}!`} />
       <WindowBody id={"menu"}>
         <p>Select your color:</p>
         <div className="color-generation">
@@ -51,6 +70,9 @@ export default function Menu() {
             Play!
           </button>
         </Link>
+        <button type="button" id="logout" onClick={() => Logout(navigate)}>
+          Logout
+        </button>
       </WindowBody>
     </div>
   );

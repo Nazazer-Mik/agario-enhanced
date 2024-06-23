@@ -48,3 +48,16 @@
   padding-right: 50px;
   margin-top: 20%;
 }
+
+#menu #logout {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding-top: 7px;
+  padding-bottom: 7px;
+  background-color: #221e22;
+}
+
+#menu #logout:hover {
+  background-color: #eca72c;
+}

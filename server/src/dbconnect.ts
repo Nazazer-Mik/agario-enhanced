@@ -1,4 +1,4 @@
-import { MongoClient, MongoError } from "mongodb";
+import { MongoClient } from "mongodb";
 
 export interface User {
   email: string;
@@ -33,6 +33,22 @@ export async function InsertUser(user: User): Promise<string> {
   await client.db(dbName).collection("Users").insertOne(user);
   console.log("New user created: " + user.username);
   return "OK";
+}
+
+export async function AuthenticateUser(user: User): Promise<string> {
+  const userFound = await FindUser({ username: user.username });
+
+  if (!userFound || userFound.password !== user.password) {
+    return "Username os password is wrong";
+  }
+
+  console.log(`${user.username} has logged in!`);
+  return "OK";
+}
+
+export async function GetUserId(user: User) {
+  const userFound = await FindUser({ username: user.username });
+  return userFound?._id.toString();
 }
 
 const FindUser = (criteria: { email: string } | { username: string }) =>

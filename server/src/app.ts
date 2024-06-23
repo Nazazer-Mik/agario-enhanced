@@ -25,6 +25,19 @@ app.post("/register", async (req, res) => {
   res.send(result);
 });
 
+app.post("/login", async (req, res) => {
+  const user: db.User = req.body;
+  const result: string = await db.AuthenticateUser(user);
+  const userId = await db.GetUserId(user);
+
+  const loginInfo = {
+    status: result,
+    userId: userId ?? null,
+  };
+
+  res.send(JSON.stringify(loginInfo));
+});
+
 app.listen(port, () => {
   return console.log(`Express is listening at http://localhost:${port}`);
 });

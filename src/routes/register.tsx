@@ -3,32 +3,7 @@ import WindowHead from "../components/windowHead";
 import WindowBody from "../components/windowBody";
 import "./css/auth.css";
 import { md5 } from "js-md5";
-
-function CheckCredentials(user: { [k: string]: FormDataEntryValue }): string {
-  const emailRegexp =
-    /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-  const email = (user.email as string).toLowerCase();
-
-  const passwordRegexp = /^(?=.*[0-9])[a-zA-Z0-9!@#$%^&*]{6,16}$/;
-  const password = (user.password as string).toLowerCase();
-
-  const usernameRegexp = /^.{3,16}$/;
-  const username = (user.username as string).toLowerCase();
-
-  if (email == "" || username == "" || password == "")
-    return "Please, fill all the fields";
-
-  if (!email.match(emailRegexp))
-    return "The entered email address is not valid";
-
-  if (!username.match(usernameRegexp))
-    return "Username is too short or too long";
-
-  if (!password.match(passwordRegexp))
-    return "Password doesn't meet complexity requirements";
-
-  return "OK";
-}
+import { CheckRegisterCredentials } from "./authUtils";
 
 export async function action({ request }: { request: Request }) {
   const formData = await request.formData();
@@ -40,7 +15,7 @@ export async function action({ request }: { request: Request }) {
   ) as HTMLElement;
 
   // Check credentials for complexity
-  const status: string = CheckCredentials(regData);
+  const status: string = CheckRegisterCredentials(regData);
   if (status !== "OK") {
     errLine.innerHTML = status;
     return null;
@@ -59,7 +34,7 @@ export async function action({ request }: { request: Request }) {
   })
     .then((response) => response.text())
     .then((message) => {
-      if (message == "OK") {
+      if (message === "OK") {
         errLine.innerHTML = "";
       } else {
         errLine.innerHTML = message;
