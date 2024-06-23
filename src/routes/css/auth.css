@@ -1,5 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&family=Sanchez:ital@0;1&display=swap");
 
 .auth-form {
   display: flex;
@@ -71,6 +72,14 @@
 
 .auth-form p a:hover {
   text-decoration: underline #8256c5 3px;
+}
+
+#error-line {
+  color: rgb(218, 0, 0);
+  margin: 0;
+  font-family: "Sanchez", serif;
+  font-weight: 600;
+  font-size: 0.9rem;
 }
 
 #reg-window-body hr {

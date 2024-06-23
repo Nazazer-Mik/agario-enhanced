@@ -17,6 +17,7 @@ export default function Login() {
             <div>
               <label htmlFor="password"> Password:</label>
               <input type="password" id="password" placeholder="12345678" />
+              <h5 id="error-line"></h5>
               <p>
                 Don't have an account yet? <Link to={"/register"}>Sign up</Link>
               </p>
