@@ -80,7 +80,7 @@ export default function Login() {
               <input
                 type="password"
                 id="password"
-                placeholder="12345678"
+                placeholder="StrongSquirrel"
                 name="password"
               />
               <h5 id="error-line"></h5>

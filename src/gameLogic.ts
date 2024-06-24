@@ -99,7 +99,7 @@ function maintainBlobsAmount() {
 class Player {
   private x: number;
   private y: number;
-  public readonly r = 50;
+  private r = 25;
   private color: string;
   private mass: number;
 
@@ -112,6 +112,7 @@ class Player {
 
   public getX = () => this.x;
   public getY = () => this.y;
+  public getR = () => this.r;
 
   public getMass = () => this.mass;
 
@@ -132,10 +133,16 @@ class Player {
 
     if (distance < this.r) {
       this.mass += 2;
+      this.r = 25 + this.calculateGrow();
+
       return true;
     }
 
     return false;
+  }
+
+  private calculateGrow(): number {
+    return Math.sqrt(20 * this.mass) - 31;
   }
 }
 
@@ -178,8 +185,8 @@ export function update(): boolean {
   const halfHeight = canvas.height / 2;
 
   const clampedX =
-    (((mouseX - halfWidth) / halfWidth) * 10) / (halfHeight / halfWidth); // Adding proportion of screen to make correct speed
-  const clampedY = ((mouseY - halfHeight) / halfHeight) * 10; // [-10; 10]
+    (((mouseX - halfWidth) / halfWidth) * 10) / (halfHeight / halfWidth) || 0; // Adding proportion of screen to make correct speed
+  const clampedY = ((mouseY - halfHeight) / halfHeight) * 10 || 0; // [-10; 10]
 
   const speedX = Math.abs(clampedX) > 3 ? 3 * Math.sign(clampedX) : clampedX;
   const speedY = Math.abs(clampedY) > 3 ? 3 * Math.sign(clampedY) : clampedY;
@@ -216,7 +223,6 @@ export function update(): boolean {
       }
     }
   }
-  console.log({ part: blobsNearby.length, all: blobs.length });
 
   return false;
 }
@@ -236,7 +242,7 @@ export function draw(): void {
   drawCircle(
     canvas.width / 2,
     canvas.height / 2,
-    player.r,
+    player.getR(),
     "green",
     "brown",
     3
