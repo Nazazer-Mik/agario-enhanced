@@ -3,7 +3,7 @@ import bodyParser from "body-parser";
 import * as db from "./dbconnect";
 import http from "http";
 import { Server } from "socket.io";
-import Game from "./game";
+import Game, { UserData } from "./game";
 
 const app = express();
 const server = http.createServer(app);
@@ -59,14 +59,23 @@ app.listen(port, () => {
 // Sockets section
 
 io.on("connection", (socket) => {
-  console.log("User connected by socket(?)");
+  socket.on("join", (msg) => {
+    const userData: UserData = JSON.parse(msg);
+    game.addPlayer(userData);
 
-  socket.on("playerUpdate", (msg) => {
-    console.log("PLayer is idiot: " + msg);
+    console.log(`User ${userData.username} joined game`);
   });
 
-  socket.on("disconnect", () => {
-    console.log("user disconnected");
+  socket.on("playerMove", (msg) => {
+    const details = JSON.parse(msg);
+    game
+      .findPlayerById(details.userId)
+      ?.translate(details.speedX, details.speedY);
+  });
+
+  socket.on("leave", (msg) => {
+    const userData: UserData = JSON.parse(msg);
+    console.log(`User ${userData.username} left game`);
   });
 });
 

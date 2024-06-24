@@ -25,8 +25,10 @@ export default class Blob {
     this.r = r;
     this.color = color;
     this.outlineColor = outlineColor;
-    this.sinCoef = Math.random() * 0.3;
-    this.cosCoef = Math.random() * 0.3;
+    this.sinCoef = 0.1 + Math.random() * 0.2;
+    this.cosCoef = 0.1 + Math.random() * 0.2;
+    this.sinDeg = Math.round(Math.random() * 360);
+    this.cosDeg = Math.round(Math.random() * 360);
   }
 
   public getX = () => this.x;
@@ -38,5 +40,9 @@ export default class Blob {
 
     this.sinDeg = this.sinDeg >= 360 ? 0 : this.sinDeg;
     this.cosDeg = this.cosDeg >= 360 ? 0 : this.cosDeg;
+  }
+
+  public getBlobParams(): [number, number, number, string, string] {
+    return [this.x, this.y, this.r, this.color, this.outlineColor];
   }
 }

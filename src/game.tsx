@@ -1,6 +1,6 @@
 import { ReactNode, useEffect } from "react";
 import "./game.css";
-import { draw, setup, update } from "./gameLogic";
+import { render, setup } from "./gameLogic";
 
 function getLeaders(): ReactNode {
   let lines: ReactNode[] = [];
@@ -14,27 +14,6 @@ function getLeaders(): ReactNode {
   }
 
   return lines;
-}
-
-// Limiting to 60fps
-let lastFrameTime = performance.now();
-const targetFrameTime = 1000 / 60;
-
-function render(): void {
-  const now = performance.now();
-  const delta = now - lastFrameTime;
-  let gameOver = false;
-
-  if (delta >= targetFrameTime) {
-    lastFrameTime = now - (delta % targetFrameTime);
-
-    gameOver = update();
-    draw();
-  }
-
-  if (!gameOver) {
-    window.requestAnimationFrame(render);
-  }
 }
 
 function startGame() {
@@ -55,7 +34,7 @@ export default function Game() {
   return (
     <>
       <canvas id="viewport" />
-      <h3 id="current-mass"></h3>
+      <h3 id="current-mass">Current mass: </h3>
       <div className="leaderboard">{getLeaders()}</div>
     </>
   );

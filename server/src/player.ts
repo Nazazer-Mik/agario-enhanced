@@ -1,16 +1,28 @@
 import Blob from "./blob";
+import { gameFieldHeight, gameFieldWidth } from "./game";
 
 export default class Player {
+  public readonly userId: string;
+  public readonly userName: string;
+
   private x: number;
   private y: number;
   private r = 25;
   private color: string;
   private mass: number;
 
-  public constructor(x: number, y: number, color: string) {
+  public constructor(
+    x: number,
+    y: number,
+    color: string,
+    userId: string,
+    username: string
+  ) {
     this.x = x;
     this.y = y;
     this.color = color;
+    this.userId = userId;
+    this.userName = username;
     this.mass = 50;
   }
 
@@ -20,12 +32,7 @@ export default class Player {
 
   public getMass = () => this.mass;
 
-  public translate(
-    offsetX: number,
-    offsetY: number,
-    gameFieldWidth: number,
-    gameFieldHeight: number
-  ) {
+  public translate(offsetX: number, offsetY: number) {
     this.x += offsetX;
     this.y += offsetY;
 
@@ -52,5 +59,25 @@ export default class Player {
 
   private calculateGrow(): number {
     return Math.sqrt(20 * this.mass) - 31;
+  }
+
+  public getPlayerParams(): [
+    number,
+    number,
+    number,
+    number,
+    string,
+    string,
+    string
+  ] {
+    return [
+      this.x,
+      this.y,
+      this.r,
+      this.mass,
+      this.userId,
+      this.userName,
+      this.color,
+    ];
   }
 }
