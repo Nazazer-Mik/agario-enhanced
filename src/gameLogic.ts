@@ -1,3 +1,5 @@
+import { socket } from "./socket";
+
 let canvas: HTMLCanvasElement;
 let massField: HTMLDivElement;
 let ctx: CanvasRenderingContext2D;
@@ -177,6 +179,9 @@ export function setup(
     canvas.height / 2 + Math.random() * (gameFieldHeight - canvas.height);
 
   player = new Player(rand_x, rand_y, "#ECA72C");
+
+  socket.connect();
+  socket.emit("playerUpdate", true);
 }
 
 export function update(): boolean {
