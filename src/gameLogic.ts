@@ -6,6 +6,7 @@ import { socket } from "./socket";
 let canvas: HTMLCanvasElement;
 let massField: HTMLDivElement;
 let ctx: CanvasRenderingContext2D;
+let setLeadersCallback: (leaders: Player[]) => void;
 
 let mouseX: number;
 let mouseY: number;
@@ -21,10 +22,12 @@ const gameFieldHeight = 945 * 5; // 4725
 
 export function setup(
   newCanvas: HTMLCanvasElement,
-  newMassField: HTMLDivElement
+  newMassField: HTMLDivElement,
+  newSetLeadersCallback: (leaders: Player[]) => void
 ): void {
   canvas = newCanvas;
   massField = newMassField;
+  setLeadersCallback = newSetLeadersCallback;
   ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
 
   // Setting right size of the canvas
@@ -69,7 +72,7 @@ export function render(): void {
   const delta = now - lastFrameTime;
   let gameOver = false;
 
-  if (delta >= targetFrameTime) {
+  if (delta >= targetFrameTime && localGame.gameLoaded()) {
     lastFrameTime = now - (delta % targetFrameTime);
 
     draw();
@@ -104,4 +107,5 @@ export function draw(): void {
   const player: Player = localGame.draw(ctx, canvas);
 
   massField.innerHTML = "Current mass: " + player.mass;
+  setLeadersCallback(localGame.getLeaders());
 }

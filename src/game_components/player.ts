@@ -36,5 +36,14 @@ export default class Player {
     const newY = this.y - relY;
 
     drawCircle(newX, newY, this.r, this.color, "brown", 3, ctx);
+
+    ctx.font = "25px Courier lighter";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillStyle = "#ECA72C";
+    ctx.lineWidth = 0.1;
+    ctx.strokeStyle = "#2F2723";
+    ctx.fillText(this.userName, newX, newY);
+    ctx.strokeText(this.userName, newX, newY);
   }
 }

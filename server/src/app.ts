@@ -61,6 +61,8 @@ app.listen(port, () => {
 io.on("connection", (socket) => {
   socket.on("join", (msg) => {
     const userData: UserData = JSON.parse(msg);
+
+    game.removePLayer(userData);
     game.addPlayer(userData);
 
     console.log(`User ${userData.username} joined game`);
@@ -75,6 +77,7 @@ io.on("connection", (socket) => {
 
   socket.on("leave", (msg) => {
     const userData: UserData = JSON.parse(msg);
+    game.removePLayer(userData);
     console.log(`User ${userData.username} left game`);
   });
 });

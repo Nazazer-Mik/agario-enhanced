@@ -53,8 +53,21 @@ export default class LocalGame {
           3,
           ctx
         );
+
+        ctx.font = "25px Courier lighter";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillStyle = "#ECA72C";
+        ctx.fillText(player.userName, canvas.width / 2, canvas.height / 2);
+        ctx.lineWidth = 0.1;
+        ctx.strokeStyle = "#2F2723";
+        ctx.strokeText(player.userName, canvas.width / 2, canvas.height / 2);
       } else {
-        player.draw(currentPlayer.x, currentPlayer.y, ctx);
+        player.draw(
+          currentPlayer.x - canvas.width / 2,
+          currentPlayer.y - canvas.height / 2,
+          ctx
+        );
       }
     });
 
@@ -83,5 +96,17 @@ export default class LocalGame {
     } else {
       return false;
     }
+  }
+
+  public gameLoaded(): boolean {
+    return this.players.length > 0;
+  }
+
+  public getLeaders(): Player[] {
+    const sorted = this.players.sort(
+      (player1, player2) => player2.mass - player1.mass
+    );
+
+    return sorted.slice(0, 10);
   }
 }

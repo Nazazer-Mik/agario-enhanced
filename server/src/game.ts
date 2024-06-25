@@ -29,8 +29,8 @@ export default class Game {
   }
 
   public addPlayer(userData: UserData): void {
-    const rand_x = 960 + Math.random() * (gameFieldWidth - 1920);
-    const rand_y = 540 + Math.random() * (gameFieldHeight - 1080);
+    const rand_x = 800; //960 + Math.random() * (gameFieldWidth - 1920);
+    const rand_y = 800; //540 + Math.random() * (gameFieldHeight - 1080);
 
     const player = new Player(
       rand_x,
@@ -40,6 +40,15 @@ export default class Game {
       userData.username
     );
     this.players.push(player);
+  }
+
+  public removePLayer(userData: UserData): void {
+    for (let i = 0; i < this.players.length; i++) {
+      if (this.players[i].userId === userData.userId) {
+        this.players.splice(i, 1);
+        return;
+      }
+    }
   }
 
   public findPlayerById(userId: string): Player | null {
