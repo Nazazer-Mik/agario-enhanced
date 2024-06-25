@@ -14,11 +14,6 @@ let mouseY: number;
 
 const localGame = new LocalGame();
 
-//----------------DETAILS----------------
-
-const gameFieldWidth = 1920 * 3; // 5760
-const gameFieldHeight = 945 * 5; // 4725
-
 //---------------------------------------
 
 export function setup(

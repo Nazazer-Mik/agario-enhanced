@@ -2,6 +2,13 @@ import Blob from "./blob";
 import { drawCircle } from "./draw_utils";
 import Player from "./player";
 
+//----------------DETAILS----------------
+
+const gameFieldWidth = 1920 * 3; // 5760
+const gameFieldHeight = 945 * 5; // 4725
+
+//---------------------------------------
+
 type blobParams = [number, number, number, string, string];
 type playersParams = [number, number, number, number, string, string, string];
 
@@ -20,6 +27,41 @@ export default class LocalGame {
     fieldData.players.forEach((player: playersParams) =>
       this.players.push(new Player(...player))
     );
+  }
+
+  private drawMiniMap(
+    ctx: CanvasRenderingContext2D,
+    canvas: HTMLCanvasElement
+  ) {
+    const currentUserId = localStorage.getItem("userId");
+
+    const scrWidth = canvas.width;
+    const scrHeight = canvas.height;
+
+    const mapWidth = scrWidth / 7;
+    const mapHeight = scrHeight / 5.742;
+
+    const mapX = 50;
+    const mapY = scrHeight - mapHeight - 50;
+
+    const drawPlayer = (player: Player) => {
+      const mapPlayerX = (player.getX() / gameFieldWidth) * mapWidth;
+      const mapPlayerY = (player.getY() / gameFieldHeight) * mapHeight;
+
+      ctx.beginPath();
+      ctx.arc(mapX + mapPlayerX, mapY + mapPlayerY, 3, 0, Math.PI * 2);
+      ctx.fillStyle = currentUserId === player.userId ? "green" : "#44355B";
+      ctx.fill();
+      ctx.closePath();
+    };
+
+    ctx.strokeStyle = "#ECA72C";
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.rect(mapX, mapY, mapWidth, mapHeight);
+    ctx.stroke();
+
+    this.players.forEach(drawPlayer);
   }
 
   public draw(
@@ -75,6 +117,8 @@ export default class LocalGame {
         );
       }
     });
+
+    this.drawMiniMap(ctx, canvas);
 
     return currentPlayer;
   }
