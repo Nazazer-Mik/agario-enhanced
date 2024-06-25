@@ -1,9 +1,10 @@
-import { Form, Link, redirect } from "react-router-dom";
+import { Form, Link, redirect, useNavigate } from "react-router-dom";
 import WindowHead from "../components/windowHead";
 import WindowBody from "../components/windowBody";
 import "./css/auth.css";
 import { md5 } from "js-md5";
 import { CheckRegisterCredentials } from "./authUtils";
+import { useEffect, useState } from "react";
 
 export async function action({ request }: { request: Request }) {
   const formData = await request.formData();
@@ -48,8 +49,21 @@ export async function action({ request }: { request: Request }) {
 }
 
 export default function Register() {
+  useEffect(() => {
+    setTimeout(() => setAnimate(false), 5);
+    setTimeout(() => setAnimate(true), 5);
+  }, []);
+  const [animate, setAnimate] = useState(false);
+  const navigate = useNavigate();
+
+  const startLoginTransition = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+    setAnimate(false);
+    setTimeout(() => navigate("/login"), 500);
+  };
+
   return (
-    <div className="window-wrapper">
+    <div className={`window-wrapper ${animate ? "" : "behind-screen"}`}>
       <WindowHead text="REGISTER" />
       <WindowBody id={"reg-window-body"}>
         <Form className="auth-form" id="register" method="post">
@@ -82,7 +96,10 @@ export default function Register() {
               />
               <h5 id="error-line"></h5>
               <p>
-                Already have an account? <Link to={"/login"}>Log in</Link>
+                Already have an account?{" "}
+                <a href={"/login"} onClick={startLoginTransition}>
+                  Log in
+                </a>
               </p>
             </div>
             <button type="submit">Submit</button>

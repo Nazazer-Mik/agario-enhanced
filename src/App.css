@@ -1,6 +1,12 @@
+body {
+  overflow: hidden;
+  background-color: #221e22;
+}
+
 .App {
   text-align: center;
   background: url("./assets/background.jpg");
+  transition: 0.5s ease-in-out all;
 }
 
 .App-header {
@@ -28,4 +34,8 @@
   align-items: stretch;
   height: 100%;
   overflow: hidden;
+}
+
+.blur {
+  filter: opacity(0%) blur(10px);
 }

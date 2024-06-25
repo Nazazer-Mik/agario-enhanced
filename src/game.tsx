@@ -35,6 +35,12 @@ function startGame(
     "current-mass"
   ) as HTMLDivElement;
 
+  setTimeout(() => {
+    canvas.classList.remove("blur");
+    mass.classList.remove("blur");
+    document.getElementById("leaderboard")?.classList.remove("blur");
+  }, 5);
+
   setup(
     canvas,
     mass,
@@ -51,9 +57,11 @@ export default function Game() {
 
   return (
     <>
-      <canvas id="viewport" />
-      <h3 id="current-mass">Current mass: </h3>
-      <div className="leaderboard">
+      <canvas id="viewport" className="blur" />
+      <h3 id="current-mass" className="blur">
+        Current mass:{" "}
+      </h3>
+      <div id="leaderboard" className="leaderboard blur">
         <div>
           <center>Leaderboard</center>
         </div>

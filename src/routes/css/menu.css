@@ -23,7 +23,8 @@
   border: dashed 5px #eca72c;
 }
 
-#menu button {
+#menu button,
+#logout {
   background-color: rgba(0, 0, 0, 0);
   border: outset 5px #eca72c;
   border-radius: 75px;
@@ -37,7 +38,8 @@
   transition: 0.15s ease-in-out all;
 }
 
-#menu button:hover {
+#menu button:hover,
+#logout:hover {
   background-color: #eca72c;
   color: #221e22;
 }
@@ -49,7 +51,7 @@
   margin-top: 20%;
 }
 
-#menu #logout {
+#logout {
   position: absolute;
   top: 10px;
   left: 10px;

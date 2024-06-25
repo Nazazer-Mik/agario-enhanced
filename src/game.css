@@ -1,8 +1,15 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap");
 
+#viewport,
+#leaderboard,
+#current-mass {
+  transition: 1s ease-in-out all;
+}
+
 body {
   overflow: hidden;
+  background-color: #221e22;
 }
 
 #viewport {
@@ -53,4 +60,8 @@ body {
   font-size: 1.15em;
   color: #eca72c;
   padding-bottom: 7px;
+}
+
+.blur {
+  filter: opacity(0%) blur(10px);
 }

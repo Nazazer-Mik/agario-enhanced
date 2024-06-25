@@ -1,9 +1,10 @@
-import { Form, Link, redirect } from "react-router-dom";
+import { Form, Link, redirect, useNavigate } from "react-router-dom";
 import WindowHead from "../components/windowHead";
 import WindowBody from "../components/windowBody";
 import "./css/auth.css";
 import { CheckLoginCredentials } from "./authUtils";
 import { md5 } from "js-md5";
+import { useEffect, useState } from "react";
 
 export const loader = async () => {
   const userId: string | null = localStorage.getItem("userId");
@@ -60,8 +61,23 @@ export async function action({ request }: { request: Request }) {
 }
 
 export default function Login() {
+  useEffect(() => {
+    setTimeout(() => setAnimate(false), 5);
+    setTimeout(() => setAnimate(true), 5);
+  }, []);
+  const [animate, setAnimate] = useState(false);
+  const navigate = useNavigate();
+
+  const startRegisterTransition = (
+    event: React.MouseEvent<HTMLAnchorElement>
+  ) => {
+    event.preventDefault();
+    setAnimate(false);
+    setTimeout(() => navigate("/register"), 500);
+  };
+
   return (
-    <div className="window-wrapper">
+    <div className={`window-wrapper ${animate ? "" : "behind-screen"}`}>
       <WindowHead text="LOGIN" />
       <WindowBody id={"login-window-body"}>
         <Form className="auth-form" id="login" method="post">
@@ -85,7 +101,10 @@ export default function Login() {
               />
               <h5 id="error-line"></h5>
               <p>
-                Don't have an account yet? <Link to={"/register"}>Sign up</Link>
+                Don't have an account yet?{" "}
+                <a href={"/register"} onClick={startRegisterTransition}>
+                  Sign up
+                </a>
               </p>
             </div>
             <button type="submit">Submit</button>
