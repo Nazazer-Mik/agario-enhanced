@@ -5,6 +5,7 @@ import "./css/auth.css";
 import { md5 } from "js-md5";
 import { CheckRegisterCredentials } from "./authUtils";
 import { useEffect, useState } from "react";
+import { ip } from "../ip";
 
 export async function action({ request }: { request: Request }) {
   const formData = await request.formData();
@@ -26,7 +27,7 @@ export async function action({ request }: { request: Request }) {
   regData.password = await md5(regData.password as string);
 
   // Send register request
-  await fetch("http://localhost:8800/register", {
+  await fetch(`http://${ip}:8800/register`, {
     method: "POST",
     body: JSON.stringify(regData),
     headers: {

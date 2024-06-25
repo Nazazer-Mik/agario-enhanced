@@ -6,7 +6,7 @@ import { NavigateFunction, useNavigate } from "react-router-dom";
 
 function gameOver(navigate: NavigateFunction): void {
   navigate("/");
-  window.location.reload();
+  setTimeout(() => window.location.reload(), 5);
 }
 
 function getLeaders(leaders: Player[]): ReactNode[] {

@@ -22,7 +22,7 @@ export default class Blob {
   ) {
     this.x = x;
     this.y = y;
-    this.r = r;
+    this.r = r + Math.round(Math.random() * 2);
     this.color = color;
     this.outlineColor = outlineColor;
     this.sinCoef = 0.1 + Math.random() * 0.2;
@@ -33,6 +33,7 @@ export default class Blob {
 
   public getX = () => this.x;
   public getY = () => this.y;
+  public getR = () => this.r;
 
   public floatAround(): void {
     this.x += this.sinCoef * Math.sin(this.sinDeg++ * (Math.PI / 180));

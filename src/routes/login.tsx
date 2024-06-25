@@ -5,6 +5,7 @@ import "./css/auth.css";
 import { CheckLoginCredentials } from "./authUtils";
 import { md5 } from "js-md5";
 import { useEffect, useState } from "react";
+import { ip } from "../ip";
 
 export const loader = async () => {
   const userId: string | null = localStorage.getItem("userId");
@@ -35,7 +36,7 @@ export async function action({ request }: { request: Request }) {
   loginData.password = await md5(loginData.password as string);
 
   // Send login request
-  await fetch("http://localhost:8800/login", {
+  await fetch(`http://${ip}:8800/login`, {
     method: "POST",
     body: JSON.stringify(loginData),
     headers: {

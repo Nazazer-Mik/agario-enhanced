@@ -1,4 +1,4 @@
-import Blob from "./blob";
+import Blob, { BLOB_SIZE } from "./blob";
 import { gameFieldHeight, gameFieldWidth } from "./game";
 
 export default class Player {
@@ -48,7 +48,7 @@ export default class Player {
     );
 
     if (distance < this.r) {
-      this.mass += 2;
+      this.mass += 2 + blob.getR() - BLOB_SIZE;
       this.r = 25 + this.calculateGrow();
 
       return true;
