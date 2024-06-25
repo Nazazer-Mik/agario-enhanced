@@ -46,6 +46,12 @@ export default function Menu() {
 
   useEffect(() => {
     localStorage.setItem("playerColor", playerColor);
+
+    setTimeout(() => {
+      document
+        .getElementsByClassName("window-wrapper")[0]
+        .classList.remove("behind-screen");
+    }, 5);
   }, [playerColor]);
 
   const startGameTransition = (event: React.MouseEvent<HTMLAnchorElement>) => {
@@ -56,7 +62,7 @@ export default function Menu() {
 
   return (
     <>
-      <div className="window-wrapper">
+      <div className="window-wrapper behind-screen">
         <WindowHead text={`Welcome back, ${user.name}!`} />
         <WindowBody id={"menu"}>
           <p>Select your color:</p>

@@ -63,3 +63,12 @@
 #menu #logout:hover {
   background-color: #eca72c;
 }
+
+.window-wrapper {
+  transition: 0.5s ease-in-out all;
+  transform: translateY(0%);
+}
+
+.behind-screen {
+  transform: translateY(-100%);
+}
