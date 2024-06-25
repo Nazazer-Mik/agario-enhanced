@@ -61,6 +61,11 @@ export default class Player {
     return Math.sqrt(20 * this.mass) - 31;
   }
 
+  public eatPlayer(player: Player): void {
+    this.mass += player.getMass();
+    this.r = 25 + this.calculateGrow();
+  }
+
   public getPlayerParams(): [
     number,
     number,

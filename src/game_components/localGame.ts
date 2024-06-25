@@ -25,11 +25,16 @@ export default class LocalGame {
   public draw(
     ctx: CanvasRenderingContext2D,
     canvas: HTMLCanvasElement
-  ): Player {
+  ): Player | null {
     const currentUserId = localStorage.getItem("userId");
     const currentPlayer = this.players.filter(
       (player) => player.userId === currentUserId
     )[0];
+
+    if (currentPlayer == null) {
+      // Player was eaten => quit game
+      return null;
+    }
 
     // const blobsNearby = this.blobs.filter((blob) =>
     //   this.proximityPredicate(blob, currentPlayer, canvas)

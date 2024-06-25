@@ -29,8 +29,8 @@ export default class Game {
   }
 
   public addPlayer(userData: UserData): void {
-    const rand_x = 800; //960 + Math.random() * (gameFieldWidth - 1920);
-    const rand_y = 800; //540 + Math.random() * (gameFieldHeight - 1080);
+    const rand_x = 960 + Math.random() * (gameFieldWidth - 1920);
+    const rand_y = 540 + Math.random() * (gameFieldHeight - 1080);
 
     const player = new Player(
       rand_x,
@@ -52,10 +52,10 @@ export default class Game {
   }
 
   public findPlayerById(userId: string): Player | null {
-    return this.players.find((player) => player.userId == userId) || null;
+    return this.players.find((player) => player.userId === userId) || null;
   }
 
-  private checkEatable() {
+  private checkEatableBlobs(): void {
     this.players.forEach((player: Player) => {
       let toBeDeleted = -1;
 
@@ -72,11 +72,43 @@ export default class Game {
     });
   }
 
+  private checkEatablePlayers(): void {
+    let toEat: { eater: number; food: number }[] = [];
+
+    for (let i = 0; i < this.players.length; i++) {
+      for (let j = 0; j < this.players.length; j++) {
+        const eater = this.players[i];
+        const food = this.players[j];
+        const distance = Math.sqrt(
+          Math.pow(eater.getX() - food.getX(), 2) +
+            Math.pow(eater.getY() - food.getY(), 2)
+        );
+
+        // Mass of eater should at least 20% more
+        if (
+          distance < eater.getR() - food.getR() / 2 &&
+          eater.getMass() / food.getMass() >= 1.2 &&
+          i !== j
+        ) {
+          toEat.push({ eater: i, food: j });
+        }
+      }
+    }
+
+    toEat.forEach((pair) => {
+      this.players[pair.eater].eatPlayer(this.players[pair.food]);
+      this.players.splice(pair.food, 1);
+    });
+  }
+
   public update(): void {
     // BLOBS
-    this.checkEatable();
+    this.checkEatableBlobs();
     this.maintainBlobsAmount();
     this.blobs.forEach((blob: Blob) => blob.floatAround());
+
+    // PLAYERS
+    this.checkEatablePlayers();
   }
 
   public getGeneralMPData() {

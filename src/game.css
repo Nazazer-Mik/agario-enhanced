@@ -48,3 +48,9 @@ body {
 .leaderboard div {
   padding: 2px;
 }
+
+.leaderboard center {
+  font-size: 1.15em;
+  color: #eca72c;
+  padding-bottom: 7px;
+}

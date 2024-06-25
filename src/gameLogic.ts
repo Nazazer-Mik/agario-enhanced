@@ -7,6 +7,7 @@ let canvas: HTMLCanvasElement;
 let massField: HTMLDivElement;
 let ctx: CanvasRenderingContext2D;
 let setLeadersCallback: (leaders: Player[]) => void;
+let processGameOver: () => void;
 
 let mouseX: number;
 let mouseY: number;
@@ -23,11 +24,13 @@ const gameFieldHeight = 945 * 5; // 4725
 export function setup(
   newCanvas: HTMLCanvasElement,
   newMassField: HTMLDivElement,
-  newSetLeadersCallback: (leaders: Player[]) => void
+  newSetLeadersCallback: (leaders: Player[]) => void,
+  stopGame: () => void
 ): void {
   canvas = newCanvas;
   massField = newMassField;
   setLeadersCallback = newSetLeadersCallback;
+  processGameOver = stopGame;
   ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
 
   // Setting right size of the canvas
@@ -75,12 +78,15 @@ export function render(): void {
   if (delta >= targetFrameTime && localGame.gameLoaded()) {
     lastFrameTime = now - (delta % targetFrameTime);
 
-    draw();
     update();
+    gameOver = draw();
   }
 
   if (!gameOver) {
     window.requestAnimationFrame(render);
+  } else {
+    socket.disconnect();
+    processGameOver();
   }
 }
 
@@ -101,11 +107,17 @@ export function update() {
   socket.emit("playerMove", JSON.stringify(dataToSend));
 }
 
-export function draw(): void {
+export function draw(): boolean {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  const player: Player = localGame.draw(ctx, canvas);
+  const player: Player | null = localGame.draw(ctx, canvas);
 
-  massField.innerHTML = "Current mass: " + player.mass;
+  if (player == null) {
+    // Player was eaten
+    return true;
+  }
+
+  massField.innerHTML = "Current mass: " + player?.mass;
   setLeadersCallback(localGame.getLeaders());
+  return false;
 }
